@@ -24,6 +24,7 @@ public class PointsController {
 
     @PostMapping
     public Iterable<Attempt> submitPoints(@RequestBody Point point){
+        //Validate
         final long start = System.nanoTime();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getDetails();
         Attempt attempt = new Attempt();

@@ -1,5 +1,6 @@
 package com.cemetiere.weblab.auth;
 
+import com.cemetiere.weblab.exceptions.*;
 import com.cemetiere.weblab.jwt.JwtPair;
 import com.cemetiere.weblab.jwt.JwtRefreshToken;
 import com.cemetiere.weblab.jwt.JwtUtils;
@@ -37,7 +38,7 @@ public class AuthController {
         try {
             return (User) service.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            throw new UserNotFoundException();
         }
     }
 
@@ -48,11 +49,11 @@ public class AuthController {
         try {
             user = service.loadUserByUsername(request.username());
         } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
+            throw new IncorrectUsernameException();
         }
 
         if (!encoder.matches(request.password(), user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
+            throw new IncorrectPasswordException();
         }
 
         return new JwtPair(
@@ -73,22 +74,22 @@ public class AuthController {
             } catch (UsernameNotFoundException ignored) {}
         }
 
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid token");
+        throw new InvalidTokenException();
     }
 
     @PostMapping("/register")
     public String register(@RequestBody AuthRequest request) {
         // Validate
         if (!request.username().matches("^[a-zA-Z0-9_]{3,10}$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad username");
+            throw new IncorrectUsernameException();
         }
 
         if (!request.password().matches("^[a-zA-Z0-9_]{3,10}$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad password");
+            throw new IncorrectPasswordException();
         }
 
         if (repository.existsById(request.username())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with the same username already exists");
+            throw new UserExistsException();
         }
 
         User user = new User();
