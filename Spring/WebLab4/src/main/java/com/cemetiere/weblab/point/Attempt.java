@@ -3,6 +3,7 @@ package com.cemetiere.weblab.point;
 import com.cemetiere.weblab.auth.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @NoArgsConstructor
@@ -18,8 +19,12 @@ public class Attempt {
     @Id
     @GeneratedValue
     private long id;
+    @NonNull
     private double x;
+    @NonNull
     private double y;
+    @NonNull
+    @Min(1)
     private double r;
     @Column(name="attempt_time", nullable=false)
     private long attemptTime;
