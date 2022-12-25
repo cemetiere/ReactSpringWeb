@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService service;
     private final UserRepository repository;
@@ -33,14 +33,18 @@ public class AuthController {
         return repository.findAll();
     }
 
-    @GetMapping("/users/{username}")
-    public User getUserInfo(@PathVariable String username) {
-        try {
-            return (User) service.loadUserByUsername(username);
-        } catch (UsernameNotFoundException e) {
-            throw new UserNotFoundException();
-        }
-    }
+//    @GetMapping("/users/{username}")
+//    public User getUserInfo(@PathVariable String username) {
+//        try {
+//            return (User) service.loadUserByUsername(username);
+//        } catch (UsernameNotFoundException e) {
+//            throw new UserNotFoundException();
+//        }
+//    }
+//    @GetMapping("/users/{username}")
+//    public UserDTO getUserInfo(@PathVariable String username){
+//        return repository.findUserByUsername(username);
+//    }
 
     @PostMapping("/login")
     public JwtPair login(@RequestBody AuthRequest request) {
@@ -49,7 +53,7 @@ public class AuthController {
         try {
             user = service.loadUserByUsername(request.username());
         } catch (UsernameNotFoundException e) {
-            throw new IncorrectUsernameException();
+            throw new IncorrectUsernameException(request.username());
         }
 
         if (!encoder.matches(request.password(), user.getPassword())) {
@@ -81,7 +85,7 @@ public class AuthController {
     public String register(@RequestBody AuthRequest request) {
         // Validate
         if (!request.username().matches("^[a-zA-Z0-9_]{3,10}$")) {
-            throw new IncorrectUsernameException();
+            throw new IncorrectUsernameException(request.username());
         }
 
         if (!request.password().matches("^[a-zA-Z0-9_]{3,10}$")) {

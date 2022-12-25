@@ -13,7 +13,7 @@ const SignUp = () => {
                 navigate("/login");
             })
             .catch(error => {
-                alert(error.response.data)
+                alert(error.response.data+", password should have 3-10 symbols (a-zA-Z0-9)")
             })
     }
     return(

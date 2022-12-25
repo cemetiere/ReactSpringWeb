@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class Advisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IncorrectUsernameException.class)
-    public ResponseEntity<?> handleIncorrectUsername() {
-        return ResponseEntity.badRequest().body("Incorrect username");
+    public ResponseEntity<?> handleIncorrectUsername(IncorrectUsernameException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
     @ExceptionHandler(IncorrectPasswordException.class)
     public ResponseEntity<?> handleIncorrectPassword() {

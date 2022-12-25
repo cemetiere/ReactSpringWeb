@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     @JsonIgnore
-    @OneToMany(fetch= FetchType.EAGER, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Attempt> attempts;
 
     @JsonIgnore
