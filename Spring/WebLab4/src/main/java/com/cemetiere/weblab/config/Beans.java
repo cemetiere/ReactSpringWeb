@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class Beans {
     @Bean
-    @Scope("singleton")
     public Checker globalChecker(){
         return new Checker();
     }
 
     @Bean
-    @Scope("singleton")
     public FigureCollector globalFigureCollector(){
         return new FigureCollector();
     }
