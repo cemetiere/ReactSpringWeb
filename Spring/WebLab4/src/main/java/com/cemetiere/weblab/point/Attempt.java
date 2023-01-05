@@ -19,11 +19,8 @@ public class Attempt {
     @Id
     @GeneratedValue
     private long id;
-    @NonNull
     private double x;
-    @NonNull
     private double y;
-    @NonNull
     @Min(1)
     private double r;
     @Column(name="attempt_time", nullable=false)

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class UserDTO {
     @NotNull
-    private User user;
+    private String username;
     @NotNull
-    private String password;
+    private Long attempts;
 }

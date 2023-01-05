@@ -6,22 +6,16 @@ import com.cemetiere.weblab.jwt.JwtRefreshToken;
 import com.cemetiere.weblab.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final UserService service;
     private final UserRepository repository;
     private final PasswordEncoder encoder;
@@ -41,10 +35,13 @@ public class AuthController {
 //            throw new UserNotFoundException();
 //        }
 //    }
-//    @GetMapping("/users/{username}")
-//    public UserDTO getUserInfo(@PathVariable String username){
-//        return repository.findUserByUsername(username);
-//    }
+    @GetMapping("/users/{username}")
+    public UserDTO getUserInfo(@PathVariable String username){
+        UserDTO user = new UserDTO();
+        user.setUsername(username);
+        user.setAttempts(repository.attemptsCountByUsername(username));
+        return user;
+    }
 
     @PostMapping("/login")
     public JwtPair login(@RequestBody AuthRequest request) {

@@ -1,5 +1,6 @@
 package com.cemetiere.weblab.config;
 
+import com.cemetiere.weblab.auth.AuthController;
 import com.cemetiere.weblab.beans.Checker;
 import com.cemetiere.weblab.beans.FigureCollector;
 import org.springframework.context.annotation.Bean;
@@ -19,5 +20,6 @@ public class Beans {
     public FigureCollector globalFigureCollector(){
         return new FigureCollector();
     }
+
 
 }
